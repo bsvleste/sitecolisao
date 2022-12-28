@@ -1,0 +1,14 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body{
+    @apply bg-black text-yellow-500 
+}
+@layer components {
+    .wrapper {
+      width: min(100% - 15px,840px);
+      margin-inline: auto;
+      margin-bottom:60px;
+    }
+  }
