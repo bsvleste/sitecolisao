@@ -82,7 +82,7 @@ export function Scoreboard() {
   }
   return (
     <div className="mx-3 sm:mx-auto">
-      <div className="container flex flex-col justify-center mb-8 items-center w-full ">
+      <div className="flex flex-col justify-center mb-8 items-center w-full ">
         <div className="w-full sm:w-[35.5rem] flex justify-between tems-center mt-3 ">
           <Button.Root color="bg-yellow" size="lg">
             <Button.Icon>
