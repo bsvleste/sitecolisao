@@ -3,13 +3,18 @@ import { SecondMatch } from './SecondMatch'
 import { FirstMatch } from './FirstMatch'
 import { Button } from '../../components/Button'
 import { ScoreboardMatchProps } from '.'
+import { ModalEditScoreboard } from '../../components/ModalEditScoreboard'
+import { useState } from 'react'
 type CardMatchProps = {
   info: ScoreboardMatchProps
   isFetching: boolean
 }
 export function CardMatch({ info, isFetching }: CardMatchProps) {
   const { _id, dataPartida, primeiroQuadro, segundoQuadro } = info
-
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  function togleModal() {
+    setIsModalOpen(!isModalOpen)
+  }
   return (
     <>
       {isFetching && <h1>Loading.....</h1>}
@@ -26,7 +31,7 @@ export function CardMatch({ info, isFetching }: CardMatchProps) {
       <SecondMatch segundo={segundoQuadro} />
       <FirstMatch primeiro={primeiroQuadro} />
       <div className="w-full sm:w-[35.5rem] flex justify-between tems-center mb-10">
-        <Button.Root color="bg-yellow" size="md">
+        <Button.Root color="bg-yellow" size="md" onClick={togleModal}>
           <Button.Icon>
             <Pencil />
           </Button.Icon>
@@ -40,6 +45,11 @@ export function CardMatch({ info, isFetching }: CardMatchProps) {
           Deletar
         </Button.Root>
       </div>
+      <ModalEditScoreboard
+        isOpen={isModalOpen}
+        setIsOpen={togleModal}
+        editingScoreboard={info}
+      />
     </>
   )
 }

@@ -34,12 +34,12 @@ export const data: ScoreboardMatchProps[] = [
   {
     _id: 2,
     segundoQuadro: {
-      segundoAdversario: 2,
-      segundoColisao: 4,
+      segundoAdversario: 12,
+      segundoColisao: 7,
     },
     primeiroQuadro: {
-      primeiroAdversario: 5,
-      primeiroColisao: 6,
+      primeiroAdversario: 15,
+      primeiroColisao: 8,
     },
     dataPartida: '2022-12-15T01:48:20.062Z',
   },
