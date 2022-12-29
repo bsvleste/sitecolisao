@@ -2,8 +2,10 @@ import { addMonths, subMonths } from 'date-fns'
 import { SoccerBall } from 'phosphor-react'
 import { useEffect, useState } from 'react'
 import { Button } from '../../components/Button'
+import { ModalAddScoreboard } from '../../components/ModalAddScoreboard'
 import { CardMatch } from './CardMatch'
 import { SelectedMonth } from './SelectedMonth'
+
 export interface ScoreboardMatchProps {
   _id: number
   segundoQuadro: {
@@ -16,7 +18,7 @@ export interface ScoreboardMatchProps {
   }
   dataPartida: string
 }
-const data: ScoreboardMatchProps[] = [
+export const data: ScoreboardMatchProps[] = [
   {
     _id: 1,
     segundoQuadro: {
@@ -73,6 +75,9 @@ export function Scoreboard() {
     getScoreboard()
   }, [selectedDate, isModalOpen])
 
+  function togleModal() {
+    setIsModalOpen(!isModalOpen)
+  }
   function handleChangeDate(action: 'next' | 'prev') {
     if (action === 'next') {
       setSelectedDate(addMonths(selectedDate, 1))
@@ -84,7 +89,7 @@ export function Scoreboard() {
     <div className="mx-3 sm:mx-auto">
       <div className="flex flex-col justify-center mb-8 items-center w-full ">
         <div className="w-full sm:w-[35.5rem] flex justify-between tems-center mt-3 ">
-          <Button.Root color="bg-yellow" size="lg">
+          <Button.Root color="bg-yellow" size="lg" onClick={togleModal}>
             <Button.Icon>
               <SoccerBall />
             </Button.Icon>
@@ -102,6 +107,9 @@ export function Scoreboard() {
             <CardMatch key={data._id} info={data} isFetching={isFetching} />
           ))
         )}
+        <div className="flex justify-center items-center">
+          <ModalAddScoreboard isOpen={isModalOpen} setIsOpen={togleModal} />
+        </div>
       </div>
     </div>
   )

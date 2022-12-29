@@ -1,6 +1,13 @@
 export function Bid() {
   return (
-    <>
+    <div className="grid grid-cols-2">
+      <div>
+        <img
+          className="w-32 h-32 rounded-full"
+          src="https://avatars.dicebear.com/v2/male/dd3011f590a88aeac516cd81855a035a.svg"
+          alt=""
+        />
+      </div>
       <nav>
         <ul className="grid grid-cols-3 gap-x-5 m-10 max-w-md mx-auto">
           <li className="relative">
@@ -63,6 +70,6 @@ export function Bid() {
           </li>
         </ul>
       </nav>
-    </>
+    </div>
   )
 }
