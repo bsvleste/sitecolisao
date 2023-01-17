@@ -29,6 +29,8 @@ interface ModalEditScoreboardProps {
 	editingScoreboard: ScoreboardData
 
 }
+
+
 export function ModalEditScoreboard({
 	isOpen,
 	setIsOpen,
@@ -74,7 +76,6 @@ export function ModalEditScoreboard({
 	}
 	function handleUpdateScorebaord(e: FormEvent) {
 		const updateScoreboard = data.findIndex(update => update._id === _id)
-		console.log(updateScoreboard)
 		e.preventDefault()
 		const score: ScoreboardMatchProps = {
 			_id,
@@ -89,7 +90,6 @@ export function ModalEditScoreboard({
 			dataPartida,
 		}
 		data[updateScoreboard] = score
-		console.log(data)
 	}
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen}>

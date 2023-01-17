@@ -15,6 +15,7 @@ export function Modal({ setIsOpen, isOpen, children, className }: ModalProps) {
       setModalStatus(isOpen)
     }
   }, [isOpen, modalStatus])
+
   return (
     <ReactModal
       shouldCloseOnOverlayClick={!false}
