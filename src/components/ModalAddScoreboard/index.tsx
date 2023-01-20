@@ -2,16 +2,14 @@ import { FormEvent, useState } from 'react'
 import { Button } from '../Button'
 import {
   Calendar,
-  Envelope,
-  LockKey,
   MinusCircle,
-  PaperPlane,
   PaperPlaneTilt,
   Plus,
   XCircle,
 } from 'phosphor-react'
-import { data, ScoreboardMatchProps } from '../../pages/Scoreboard'
 import { Modal } from '../Modal'
+import db from '../../firebase'
+import { addDoc, collection } from 'firebase/firestore'
 
 interface ModalAddScoreboardProps {
   setIsOpen: () => void
@@ -58,10 +56,9 @@ export function ModalAddScoreboard({
         break
     }
   }
-  function handleSaveScorebaord(e: FormEvent) {
+  async function handleSaveScorebaord(e: FormEvent) {
     e.preventDefault()
-    const score: ScoreboardMatchProps = {
-      _id: 4,
+    const score = {
       segundoQuadro: {
         segundoColisao,
         segundoAdversario,
@@ -72,8 +69,18 @@ export function ModalAddScoreboard({
       },
       dataPartida,
     }
-    data.push(score)
-    console.log(data)
+    const scoreRef = await addDoc(collection(db, 'scoreboards'), {
+      segundoQuadro: {
+        segundoColisao,
+        segundoAdversario,
+      },
+      primeiroQuadro: {
+        primeiroColisao,
+        primeiroAdversario,
+      },
+      dataPartida,
+    })
+    // data.push(score)
   }
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>

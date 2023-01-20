@@ -8,10 +8,13 @@ import {
 	Plus,
 	XCircle,
 } from 'phosphor-react'
-import { data, ScoreboardMatchProps } from '../../pages/Scoreboard'
+import { ScoreboardMatchProps } from '../../pages/Scoreboard'
 import { Modal } from '../Modal'
+import { doc, setDoc } from 'firebase/firestore'
+import db from '../../firebase'
+
 interface ScoreboardData {
-	_id: number
+	id: string,
 	segundoQuadro: {
 		segundoColisao: number
 		segundoAdversario: number
@@ -22,27 +25,23 @@ interface ScoreboardData {
 	}
 	dataPartida: string
 }
-
 interface ModalEditScoreboardProps {
 	setIsOpen: () => void
 	isOpen: boolean
 	editingScoreboard: ScoreboardData
-
 }
-
-
 export function ModalEditScoreboard({
 	isOpen,
 	setIsOpen,
 	editingScoreboard
 }: ModalEditScoreboardProps) {
-	const { _id, dataPartida: updateDate, segundoQuadro, primeiroQuadro } = editingScoreboard
+	const { id, dataPartida: updateDate, segundoQuadro, primeiroQuadro } = editingScoreboard
 	const [segundoColisao, setSegundoColisao] = useState(segundoQuadro.segundoColisao)
 	const [segundoAdversario, setSegundoAdversario] = useState(segundoQuadro.segundoAdversario)
 	const [primeiroColisao, setPrimeiroColisao] = useState(primeiroQuadro.primeiroColisao)
 	const [primeiroAdversario, setPrimeiroAdversario] = useState(primeiroQuadro.primeiroAdversario)
 	const [dataPartida, setDataPartida] = useState(updateDate)
-
+	console.log(editingScoreboard)
 	function handleChekIsLessThanZero(e: FormEvent) {
 		switch (e.currentTarget.id) {
 			case 'segundoColisao':
@@ -74,11 +73,11 @@ export function ModalEditScoreboard({
 				break
 		}
 	}
-	function handleUpdateScorebaord(e: FormEvent) {
-		const updateScoreboard = data.findIndex(update => update._id === _id)
+	async function handleUpdateScorebaord(e: FormEvent) {
+		// const updateScoreboard = data.findIndex(update => update.id === id)
 		e.preventDefault()
-		const score: ScoreboardMatchProps = {
-			_id,
+		const score: any = {
+			dataPartida,
 			segundoQuadro: {
 				segundoColisao,
 				segundoAdversario,
@@ -87,9 +86,13 @@ export function ModalEditScoreboard({
 				primeiroColisao,
 				primeiroAdversario,
 			},
-			dataPartida,
 		}
-		data[updateScoreboard] = score
+		setDoc(doc(db, "scoreboards", id), score)
+		setDataPartida('')
+		setSegundoColisao(0)		// data[updateScoreboard] = score
+		setSegundoAdversario(0)		// data[updateScoreboard] = score
+		setPrimeiroColisao(0)		// data[updateScoreboard] = score
+		setPrimeiroAdversario(0)		// data[updateScoreboard] = score
 	}
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -126,7 +129,7 @@ export function ModalEditScoreboard({
 							required
 							type="date"
 							name="date"
-							value={dataPartida.slice(0, 10)}
+							value={updateDate}
 							onChange={(e) => setDataPartida(e.target.value)}
 						/>
 					</label>
@@ -144,7 +147,7 @@ export function ModalEditScoreboard({
 								<span className="font-bold text-md ">Colisao</span>
 								<div className="flex flex-row items-center gap-4 mt-2 text-xxl">
 									<Plus
-										onClick={() => setSegundoColisao((count) => count + 1)}
+										onClick={() => setSegundoColisao(segundoColisao + 1)}
 										className="cursor-pointer"
 									/>
 									<span>{segundoColisao}</span>

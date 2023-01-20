@@ -5,9 +5,11 @@ import { Button } from '../../components/Button'
 import { ModalAddScoreboard } from '../../components/ModalAddScoreboard'
 import { CardMatch } from './CardMatch'
 import { SelectedMonth } from './SelectedMonth'
+import { collection, onSnapshot } from 'firebase/firestore'
+import db from '../../firebase'
 
 export interface ScoreboardMatchProps {
-  _id: number
+  id: string
   segundoQuadro: {
     segundoColisao: number
     segundoAdversario: number
@@ -18,62 +20,38 @@ export interface ScoreboardMatchProps {
   }
   dataPartida: string
 }
-export const data: ScoreboardMatchProps[] = [
-  {
-    _id: 1,
-    segundoQuadro: {
-      segundoAdversario: 2,
-      segundoColisao: 4,
-    },
-    primeiroQuadro: {
-      primeiroAdversario: 5,
-      primeiroColisao: 6,
-    },
-    dataPartida: '2022-12-28T01:48:20.062Z',
-  },
-  {
-    _id: 2,
-    segundoQuadro: {
-      segundoAdversario: 12,
-      segundoColisao: 7,
-    },
-    primeiroQuadro: {
-      primeiroAdversario: 15,
-      primeiroColisao: 8,
-    },
-    dataPartida: '2022-12-15T01:48:20.062Z',
-  },
-  {
-    _id: 3,
-    segundoQuadro: {
-      segundoAdversario: 2,
-      segundoColisao: 4,
-    },
-    primeiroQuadro: {
-      primeiroAdversario: 5,
-      primeiroColisao: 6,
-    },
-    dataPartida: '2022-11-08T01:48:20.062Z',
-  },
-]
+
 export function Scoreboard() {
+  const [getDataFireBase, setGetDataFireBase] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [scoreboard, setScoreboard] = useState<ScoreboardMatchProps[]>([])
+  const [scoreboard, setScoreboard] = useState([])
+  const [resultsMonth, setResultsMonth] = useState<ScoreboardMatchProps[]>([])
   const [selectedDate, setSelectedDate] = useState(new Date())
 
-  async function getScoreboard() {
-    const resultsMont = data.filter(
-      (res: ScoreboardMatchProps) =>
-        new Date(res.dataPartida).getMonth() === selectedDate.getMonth() &&
-        new Date(res.dataPartida).getFullYear() === selectedDate.getFullYear(),
-    )
-    setScoreboard(resultsMont)
-  }
-  useEffect(() => {
-    getScoreboard()
-  }, [selectedDate, isModalOpen])
+  useEffect(
+    () =>
+      onSnapshot(collection(db, 'scoreboards'), (snapshot) => {
+        return setScoreboard(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+        )
+      }),
+    [],
+  )
+  // function getScoreboard() {
+  //   const resultsMont = scoreboard.filter(
+  //     (res: ScoreboardMatchProps) =>
+  //       new Date(res.dataPartida).getMonth() === selectedDate.getMonth() &&
+  //       new Date(res.dataPartida).getFullYear() === selectedDate.getFullYear(),
+  //   )
+  //   console.log(scoreboard)
+  //   setScoreboard(resultsMont)
+  // }
+
+  // useEffect(() => {
+  //   getScoreboard()
+  // }, [selectedDate])
 
   function togleModal() {
     setIsModalOpen(!isModalOpen)
@@ -103,10 +81,19 @@ export function Scoreboard() {
         {isLoading ? (
           <h1>Loading....</h1>
         ) : (
-          scoreboard.map((data) => (
-            <CardMatch key={data._id} info={data} isFetching={isFetching} />
-          ))
+          scoreboard
+            .filter(
+              (res: ScoreboardMatchProps) =>
+                new Date(res.dataPartida).getMonth() ===
+                selectedDate.getMonth() &&
+                new Date(res.dataPartida).getFullYear() ===
+                selectedDate.getFullYear(),
+            )
+            .map((data, index) => (
+              <CardMatch key={index} info={data} isFetching={isFetching} />
+            ))
         )}
+
         <div className="flex justify-center items-center">
           <ModalAddScoreboard isOpen={isModalOpen} setIsOpen={togleModal} />
         </div>
