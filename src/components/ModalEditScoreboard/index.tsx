@@ -150,7 +150,7 @@ export function ModalEditScoreboard({
 										onClick={() => setSegundoColisao(segundoColisao + 1)}
 										className="cursor-pointer"
 									/>
-									<span>{segundoColisao}</span>
+									<span>{segundoQuadro.segundoColisao}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"
@@ -165,7 +165,7 @@ export function ModalEditScoreboard({
 										className='cursor-pointer'
 										onClick={() => setSegundoAdversario((count) => count + 1)}
 									/>
-									<span>{segundoAdversario}</span>
+									<span>{segundoQuadro.segundoAdversario}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"
@@ -188,7 +188,7 @@ export function ModalEditScoreboard({
 										className='cursor-pointer'
 										onClick={() => setPrimeiroColisao((count) => count + 1)}
 									/>
-									<span>{primeiroColisao}</span>
+									<span>{primeiroQuadro.primeiroColisao}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"
@@ -202,7 +202,7 @@ export function ModalEditScoreboard({
 									<Plus
 										onClick={() => setPrimeiroAdversario((count) => count + 1)}
 									/>
-									<span>{primeiroAdversario}</span>
+									<span>{primeiroQuadro.primeiroAdversario}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"
