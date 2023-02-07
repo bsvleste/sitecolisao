@@ -20,5 +20,70 @@ body{
     [type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
+.placarColisao{
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 80px;
+  color:black;
+  padding:0 6px;
+  shape-outside: polygon(
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0
+      );
+      clip-path: polygon(
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 100%,
+        50% 80%,
+        50% 20%
+      );
+      background: #FFED00;
+}
+
+  .texto{
+  
+  transform: rotate(180deg)
+  }
+  .placarAdversario{
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 80px;
+  color:black;
+  padding: 0 6px;
+  transform: rotate(180deg);
+  
+  shape-outside: polygon(
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0
+      );
+      clip-path: polygon(
+         0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 100%,
+        50% 80%,
+        50% 20%
+      );
+      background: #FFED00;
+}
 
   }

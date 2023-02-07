@@ -5,7 +5,7 @@ interface AuthProps {
 
 export function Header() {
   return (
-    <nav className="bg-yellow-500 h-14 fixed inset-x-0 bottom-0 flex items-center justify-center">
+    <nav className=" z-40 bg-yellow-500 h-14 fixed inset-x-0 bottom-0 flex items-center justify-center">
       <div className="flex items-center space-x-6 font-bold text-black">
         <>
           <Link className="active:bg-slate-400" to="/admin">
