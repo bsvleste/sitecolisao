@@ -8,7 +8,6 @@ import { CardMatch } from './CardMatch'
 import { SelectedMonth } from './SelectedMonth'
 import { collection, onSnapshot } from 'firebase/firestore'
 import db from '../../firebase'
-
 export interface ScoreboardMatchProps {
   id: string
   segundoQuadro: {
@@ -27,13 +26,14 @@ export function Scoreboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [scoreboard, setScoreboard] = useState([])
+  const [scoreboard, setScoreboard] = useState<any>([])
   const [resultsMonth, setResultsMonth] = useState<ScoreboardMatchProps[]>([])
   const [selectedDate, setSelectedDate] = useState(new Date())
 
   useEffect(
     () =>
       onSnapshot(collection(db, 'scoreboards'), (snapshot) => {
+        console.log(snapshot.docs.map((doc) => ({ ...doc.data() })))
         return setScoreboard(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         )
@@ -90,7 +90,7 @@ export function Scoreboard() {
                 new Date(res.dataPartida).getFullYear() ===
                 selectedDate.getFullYear(),
             )
-            .map((data, index) => (
+            .map((data: any, index: any) => (
               <CardMatch key={index} info={data} isFetching={isFetching} />
             ))
         )}

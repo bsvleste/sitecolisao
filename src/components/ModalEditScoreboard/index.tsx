@@ -15,7 +15,6 @@ import db from '../../firebase'
 
 interface ScoreboardData {
 	id: string,
-
 	segundoQuadro: {
 		segundoColisao: number
 		segundoAdversario: number
