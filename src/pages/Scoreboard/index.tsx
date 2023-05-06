@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { addMonths, subMonths } from 'date-fns'
 import { SoccerBall } from 'phosphor-react'
 import { useEffect, useState } from 'react'
@@ -83,7 +84,7 @@ export function Scoreboard() {
         ) : (
           scoreboard
             .filter(
-              (res: ScoreboardMatchProps) =>
+              (res: ScoreboardMatchProps): boolean =>
                 new Date(res.dataPartida).getMonth() ===
                 selectedDate.getMonth() &&
                 new Date(res.dataPartida).getFullYear() ===

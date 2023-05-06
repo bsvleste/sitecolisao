@@ -15,6 +15,7 @@ import db from '../../firebase'
 
 interface ScoreboardData {
 	id: string,
+
 	segundoQuadro: {
 		segundoColisao: number
 		segundoAdversario: number
@@ -23,6 +24,7 @@ interface ScoreboardData {
 		primeiroColisao: number
 		primeiroAdversario: number
 	}
+
 	dataPartida: string
 }
 interface ModalEditScoreboardProps {
@@ -41,7 +43,7 @@ export function ModalEditScoreboard({
 	const [primeiroColisao, setPrimeiroColisao] = useState(primeiroQuadro.primeiroColisao)
 	const [primeiroAdversario, setPrimeiroAdversario] = useState(primeiroQuadro.primeiroAdversario)
 	const [dataPartida, setDataPartida] = useState(updateDate)
-	console.log(editingScoreboard)
+
 	function handleChekIsLessThanZero(e: FormEvent) {
 		switch (e.currentTarget.id) {
 			case 'segundoColisao':

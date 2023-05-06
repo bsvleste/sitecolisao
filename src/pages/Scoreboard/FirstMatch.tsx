@@ -1,5 +1,6 @@
 import logoColisao from '../../assets/logoColisao.png'
 import logoAdversario from '../../assets/logoAdversario.png'
+import { LogoSvg } from '../../components/LogoSvg'
 type FirstMatchProps = {
   primeiro: {
     primeiroColisao: number
@@ -10,31 +11,33 @@ type FirstMatchProps = {
 export function FirstMatch({ primeiro }: FirstMatchProps) {
   const { primeiroAdversario, primeiroColisao } = primeiro
   return (
-    <>
-      <div className="w-full sm:w-[35.5rem] text-colisao-500 rounded-b-md bg-grays-900 h-48 flex flex-col justify-center items-center mb-3">
-        <h3 className="mt-2 font-bold">1°Quadro</h3>
-        <div className="w-full mb-8 flex justify-around items-center">
-          <div className=" flex flex-col justify-center items-center">
-            <img
-              src={logoColisao}
-              className="w-16 h-16 rounded-full"
-              alt="Logo Colisao"
-            />
-            <h1>Colisao</h1>
+    <div className="flex justify-center items-center flex-col mb-6 ">
+      <h1>1° Quadro</h1>
+      <div className="flex flex-row  justify-between items-center">
+        <div className="relative w-80">
+          <LogoSvg />
+          <img
+            src={logoColisao}
+            alt="logo colisao"
+            className="w-24 h-24 absolute top-[5%]"
+          />
+          <div className="absolute left-[37%] top-[36%] ">
+            <span className="text-black font-semibold text-lg">
+              {primeiroColisao}
+            </span>
           </div>
-          <h3 className="font-bold">
-            {primeiroColisao} X {primeiroAdversario}
-          </h3>
-          <div className=" flex flex-col justify-center items-center">
-            <img
-              src={logoAdversario}
-              className="w-16 h-16 rounded-full"
-              alt="Logo Colisao"
-            />
-            <h1>Adversario</h1>
+          <img
+            src={logoAdversario}
+            alt="logo colisao"
+            className="w-24 h-24 absolute top-[5%] left-[65%]"
+          />
+          <div className="absolute left-[56%] top-[36%] ">
+            <span className="text-black font-semibold text-lg">
+              {primeiroAdversario}
+            </span>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
