@@ -6,9 +6,9 @@ import { Bid } from './pages/Bid'
 export function Routers() {
   return (
     <Routes>
-      <Route path="/admin" element={<DefaultLayout />}>
-        <Route path="/admin" element={<Scoreboard />} />
-        <Route path="/admin/bid" element={<Bid />} />
+      <Route path="/" element={<DefaultLayout />}>
+        <Route path="/" element={<Scoreboard />} />
+        <Route path="/bid" element={<Bid />} />
       </Route>
     </Routes>
   )
