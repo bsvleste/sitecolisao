@@ -33,7 +33,6 @@ export function Scoreboard() {
   useEffect(
     () =>
       onSnapshot(collection(db, 'scoreboards'), (snapshot) => {
-        console.log(snapshot.docs.map((doc) => ({ ...doc.data() })))
         return setScoreboard(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
         )

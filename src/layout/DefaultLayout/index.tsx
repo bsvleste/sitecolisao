@@ -5,7 +5,7 @@ export function DefaultLayout() {
   return (
     <div className="mx-3">
       <div className="wrapper">
-        <Header />
+        {/* <Header /> */}
         <Outlet />
       </div>
     </div>

@@ -27,7 +27,7 @@ function ButtonRoot({
   return (
     <Comp
       className={clsx(
-        'transition-colors duration-300 flex items-center justify-center gap-3  border-2 rounded-[50px] font-semibold  ',
+        'transition-colors duration-300 flex items-center justify-center gap-2  border-2 rounded-[50px] font-semibold  ',
 
         {
           'border-yellow-500 bg-black  text-yellow-500 hover:border-black hover:bg-yellow-500 hover:text-black':

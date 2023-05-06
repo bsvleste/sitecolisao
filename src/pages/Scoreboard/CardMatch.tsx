@@ -12,7 +12,7 @@ type CardMatchProps = {
 export function CardMatch({ info, isFetching }: CardMatchProps) {
   const { id, dataPartida, primeiroQuadro, segundoQuadro } = info
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editm, setEdit] = useState(info)
+
   function togleModal() {
     setIsModalOpen(!isModalOpen)
   }
@@ -30,14 +30,14 @@ export function CardMatch({ info, isFetching }: CardMatchProps) {
       </h1>
       <SecondMatch segundo={segundoQuadro} />
       <FirstMatch primeiro={primeiroQuadro} />
-      <div className="w-full sm:w-[35.5rem] flex justify-between tems-center mb-10">
-        <Button.Root color="bg-yellow" size="md" onClick={togleModal}>
+      <div className="w-full sm:w-[35.5rem] flex justify-between sm:justify-around tems-center mb-10">
+        <Button.Root color="bg-yellow" size="sm" onClick={togleModal}>
           <Button.Icon>
             <Pencil />
           </Button.Icon>
           Editar
         </Button.Root>
-        <Button.Root color="bg-red" size="md">
+        <Button.Root color="bg-red" size="sm">
           <Button.Icon>
             <Trash />
           </Button.Icon>
