@@ -8,8 +8,8 @@ import {
   XCircle,
 } from 'phosphor-react'
 import { Modal } from '../Modal'
-import db from '../../firebase'
 import { addDoc, collection } from 'firebase/firestore'
+import { firestore } from '../../firebase/firebaseConfig'
 
 interface ModalAddScoreboardProps {
   setIsOpen: () => void
@@ -69,7 +69,7 @@ export function ModalAddScoreboard({
       },
       dataPartida,
     }
-    const scoreRef = await addDoc(collection(db, 'scoreboards'), {
+    const scoreRef = await addDoc(collection(firestore, 'scoreboards'), {
       segundoQuadro: {
         segundoColisao,
         segundoAdversario,

@@ -11,7 +11,7 @@ import {
 import { ScoreboardMatchProps } from '../../pages/Scoreboard'
 import { Modal } from '../Modal'
 import { doc, setDoc } from 'firebase/firestore'
-import db from '../../firebase'
+import { firestore } from '../../firebase/firebaseConfig'
 
 interface ScoreboardData {
 	id: string,
@@ -88,7 +88,7 @@ export function ModalEditScoreboard({
 				primeiroAdversario,
 			},
 		}
-		setDoc(doc(db, "scoreboards", id), score)
+		setDoc(doc(firestore, "scoreboards", id), score)
 		setDataPartida('')
 		setSegundoColisao(0)		// data[updateScoreboard] = score
 		setSegundoAdversario(0)		// data[updateScoreboard] = score
