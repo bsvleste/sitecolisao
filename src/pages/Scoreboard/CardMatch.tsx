@@ -77,7 +77,7 @@ export function CardMatch({ info, isFetching }: CardMatchProps) {
                   )}
                 >
                   <AlertDialog.Title className="text-sm font-bold text-grays-300 0">
-                    Certeza que voçê vai deletar esse resultado?
+                    Certeza que você vai deletar esse resultado?
                   </AlertDialog.Title>
                   <AlertDialog.Description className="mt-2 mb-4 text-sm font-normal text-grays-600 ">
                     Esta ação não podera ser desfeita.O placar selecionado será
