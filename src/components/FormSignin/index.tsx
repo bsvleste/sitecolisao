@@ -27,7 +27,7 @@ export function FormSignin() {
       <div className="flex justify-center items-center mb-2">
         <img src={logoColisao} className="w-36 sm:w-1/2" alt="Logo colisao" />
       </div>
-      <div className="flex flex-col justify-center sm:bg-colisao-500 sm:text-yellow-500 sm:items-center  sm:h-screen">
+      <div className="flex flex-col justify-center sm:bg-colisao-500 sm:text-yellow-500  sm:h-screen">
         <div className="w-11/12 sm:max-w-[380px] mx-auto mt-8">
           <div className="ml-1 sm:mx-auto">
             <div

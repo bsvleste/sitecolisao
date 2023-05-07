@@ -13,6 +13,7 @@ import { Loading } from '../../components/Loading'
 import { AuthContext } from '../../contexts/AuthContext'
 import dayjs from 'dayjs'
 import logoColisao from '../../assets/logoColisao.png'
+import { Header } from '../../components/Header'
 export interface ScoreboardMatchProps {
   id: string
   segundoQuadro: {
@@ -119,7 +120,7 @@ export function Scoreboard() {
             )
 
         }
-
+        {user?.isAdmin && <Header />}
         <div className="flex justify-center items-center">
           <ModalAddScoreboard isOpen={isModalOpen} setIsOpen={togleModal} />
         </div>
