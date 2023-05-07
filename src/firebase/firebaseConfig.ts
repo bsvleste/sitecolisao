@@ -1,3 +1,4 @@
+import { getDatabase } from 'firebase/database'
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { browserLocalPersistence, getAuth, setPersistence } from 'firebase/auth'
@@ -20,5 +21,6 @@ const auth = getAuth()
 const firestore = getFirestore(app)
 const performance = getPerformance(app)
 const storage = getStorage(app)
+const database = getDatabase(app)
 setPersistence(auth, browserLocalPersistence)
 export { analytics, auth, firestore, performance, storage }

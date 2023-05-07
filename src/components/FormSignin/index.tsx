@@ -1,5 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Envelope, LockKey, PaperPlane, PaperPlaneTilt } from 'phosphor-react'
+import {
+  Activity,
+  Envelope,
+  LockKey,
+  PaperPlane,
+  PaperPlaneTilt,
+} from 'phosphor-react'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../Button'

@@ -1,27 +1,29 @@
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
 import { ReactNode, createContext, useEffect, useState } from 'react'
-import { auth } from '../firebase/firebaseConfig'
+import { auth, firestore } from '../firebase/firebaseConfig'
+import { doc, getDoc } from 'firebase/firestore'
 
 type UserProps = {
   id: string
   isAdmin: boolean
   name: string
-  email: string | null
 }
-type SignInCredentials = {
-  email: string
-  password: string
-}
+
 type AuthContextData = {
   signIn: (email: string, password: string) => Promise<void>
   isLogging: boolean
+  isAuthenticated: boolean
+  user: UserProps | null
 }
 type AuthProviderProps = {
   children: ReactNode
 }
+const USER_COLLECTION = '@colisao:user '
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const [user, setUser] = useState<UserProps | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLogging, setIsLogging] = useState(false)
 
   async function signIn(email: string, password: string) {
@@ -31,7 +33,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLogging(true)
     signInWithEmailAndPassword(auth, email, password)
       .then((account) => {
-        console.log(account)
+        const docRef = doc(firestore, 'users', account.user.uid)
+        getDoc(docRef)
+          .then(async (profile) => {
+            const { name, isAdmin } = profile.data() as UserProps
+            if (profile.exists()) {
+              const userData = {
+                id: account.user.uid,
+                name,
+                isAdmin,
+              }
+              localStorage.setItem(USER_COLLECTION, JSON.stringify(userData))
+              setUser(userData)
+            }
+          })
+          .catch(() => alert('Não foi possivel realizar o login'))
+        setIsAuthenticated(true)
       })
       .catch((error) => {
         const { code } = error
@@ -43,8 +60,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
       })
       .finally(() => setIsLogging(false))
   }
+  async function loadingUserStoragedData() {
+    setIsLogging(true)
+    const storagedUser = localStorage.getItem(USER_COLLECTION)
+    if (storagedUser) {
+      const userData = JSON.parse(storagedUser) as UserProps
+      setUser(userData)
+    }
+    setIsLogging(false)
+  }
+  useEffect(() => {
+    loadingUserStoragedData()
+  }, [])
   return (
-    <AuthContext.Provider value={{ signIn, isLogging }}>
+    <AuthContext.Provider value={{ signIn, isLogging, isAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   )

@@ -10,7 +10,7 @@ import {
 import { Modal } from '../Modal'
 import { addDoc, collection } from 'firebase/firestore'
 import { firestore } from '../../firebase/firebaseConfig'
-
+import { toast } from 'react-toastify'
 interface ModalAddScoreboardProps {
   setIsOpen: () => void
   isOpen: boolean
@@ -24,7 +24,7 @@ export function ModalAddScoreboard({
   const [primeiroColisao, setPrimeiroColisao] = useState(0)
   const [primeiroAdversario, setPrimeiroAdversario] = useState(0)
   const [dataPartida, setDataPartida] = useState('')
-
+  const [desableButton, setDisableButton] = useState(true)
   function handleChekIsLessThanZero(e: FormEvent) {
     switch (e.currentTarget.id) {
       case 'segundoColisao':
@@ -58,29 +58,43 @@ export function ModalAddScoreboard({
   }
   async function handleSaveScorebaord(e: FormEvent) {
     e.preventDefault()
-    const score = {
-      segundoQuadro: {
-        segundoColisao,
-        segundoAdversario,
-      },
-      primeiroQuadro: {
-        primeiroColisao,
-        primeiroAdversario,
-      },
-      dataPartida,
+    if (!dataPartida) {
+      return toast.error('Data da partida é obrigatória')
     }
-    const scoreRef = await addDoc(collection(firestore, 'scoreboards'), {
-      segundoQuadro: {
-        segundoColisao,
-        segundoAdversario,
-      },
-      primeiroQuadro: {
-        primeiroColisao,
-        primeiroAdversario,
-      },
-      dataPartida,
-    })
-    // data.push(score)
+    try {
+      setDisableButton(false)
+      const score = {
+        segundoQuadro: {
+          segundoColisao,
+          segundoAdversario,
+        },
+        primeiroQuadro: {
+          primeiroColisao,
+          primeiroAdversario,
+        },
+        dataPartida,
+      }
+      await addDoc(collection(firestore, 'scoreboards'), {
+        segundoQuadro: {
+          segundoColisao,
+          segundoAdversario,
+        },
+        primeiroQuadro: {
+          primeiroColisao,
+          primeiroAdversario,
+        },
+        dataPartida,
+      })
+      // data.push(score)
+      setDataPartida('')
+      setSegundoAdversario(0)
+      setSegundoColisao(0)
+      setPrimeiroColisao(0)
+      setPrimeiroAdversario(0)
+      toast.success('Placar adicionado com sucesso ⚽')
+    } catch (error) {
+      toast.error('Não foi possivel adicionar o resuldado,tente novamente. 😤')
+    }
   }
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -117,6 +131,7 @@ export function ModalAddScoreboard({
               required
               type="date"
               name="date"
+              value={dataPartida}
               onChange={(e) => setDataPartida(e.target.value)}
             />
           </label>
@@ -149,6 +164,7 @@ export function ModalAddScoreboard({
                 <span className="font-bold text-md ">Adversario</span>
                 <div className="flex flex-row items-center gap-4 mt-2 text-xxl">
                   <Plus
+                    className="cursor-pointer"
                     onClick={() => setSegundoAdversario((count) => count + 1)}
                   />
                   <span>{segundoAdversario}</span>
@@ -170,6 +186,7 @@ export function ModalAddScoreboard({
                 <span className="font-bold text-md ">Colisao</span>
                 <div className="flex flex-row items-center gap-4 mt-2 text-xxl">
                   <Plus
+                    className="cursor-pointer"
                     onClick={() => setPrimeiroColisao((count) => count + 1)}
                   />
                   <span>{primeiroColisao}</span>
@@ -184,6 +201,7 @@ export function ModalAddScoreboard({
                 <span className="font-bold text-md ">Adversario</span>
                 <div className="flex flex-row items-center gap-4 mt-2 text-xxl">
                   <Plus
+                    className="cursor-pointer"
                     onClick={() => setPrimeiroAdversario((count) => count + 1)}
                   />
                   <span>{primeiroAdversario}</span>

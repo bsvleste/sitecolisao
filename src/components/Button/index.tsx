@@ -27,14 +27,14 @@ function ButtonRoot({
   return (
     <Comp
       className={clsx(
-        'transition-colors duration-300 flex items-center justify-center gap-2  border-2 rounded-md font-semibold  ',
+        'transition-colors duration-300 flex items-center justify-center gap-2  border-2 rounded-md font-semibold cursor-pointer disabled:cursor-not-allowed disabled:opacity-20',
 
         {
-          'border-yellow-500 bg-black  text-yellow-500 hover:border-black hover:bg-yellow-500 hover:text-black':
+          ' border-yellow-500 bg-black  text-yellow-500 hover:border-black hover:bg-yellow-500 hover:text-black':
             color === 'bg-black',
           'border-black bg-yellow-500  text-black hover:border-yellow-500 hover:bg-black hover:text-yellow-500':
             color === 'bg-yellow',
-          'border-red-600  text-red-600 hover:bg-red-600 hover:text-black':
+          ' border-red-600  text-red-600 hover:bg-red-600 hover:text-black':
             color === 'bg-red',
 
           'w-28 text-sx py-2 px-2': size === 'sm',
