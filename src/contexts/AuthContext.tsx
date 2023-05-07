@@ -2,7 +2,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
 import { ReactNode, createContext, useEffect, useState } from 'react'
 import { auth, firestore } from '../firebase/firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
-
+import { toast } from 'react-toastify'
 type UserProps = {
   id: string
   isAdmin: boolean
@@ -53,9 +53,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       .catch((error) => {
         const { code } = error
         if (code === 'auth/user-not-found' || code === 'auth/wrong-password') {
-          alert('Usuário ou senha incorretos')
+          toast.error('Email e/ou senha não conferem.😤')
         } else {
-          alert('Ops!! Não foi possivel realizar o loggin, tente novamente')
+          toast.error(
+            'Ops!! Não foi possivel realizar o loggin, tente novamente.😱',
+          )
         }
       })
       .finally(() => setIsLogging(false))
