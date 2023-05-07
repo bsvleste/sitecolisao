@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { ReactNode, createContext, useEffect, useState } from 'react'
 import { auth, firestore } from '../firebase/firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
@@ -11,6 +11,7 @@ type UserProps = {
 
 type AuthContextData = {
   signIn: (email: string, password: string) => Promise<void>
+  signOut: () => Promise<void>
   isLogging: boolean
   isAuthenticated: boolean
   user: UserProps | null
@@ -71,11 +72,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
     setIsLogging(false)
   }
+  async function signOut() {
+    await auth.signOut()
+    localStorage.removeItem(USER_COLLECTION)
+    setUser(null)
+    setIsAuthenticated(false)
+  }
   useEffect(() => {
     loadingUserStoragedData()
   }, [])
   return (
-    <AuthContext.Provider value={{ signIn, isLogging, isAuthenticated, user }}>
+    <AuthContext.Provider
+      value={{ signIn, signOut, isLogging, isAuthenticated, user }}
+    >
       {children}
     </AuthContext.Provider>
   )
