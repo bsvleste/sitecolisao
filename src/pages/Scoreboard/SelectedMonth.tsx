@@ -1,16 +1,18 @@
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import dayjs from 'dayjs'
 import { ArrowCircleLeft, ArrowCircleRight } from 'phosphor-react'
 
 type SelectedMonthProps = {
   handleChangeDate: (action: 'next' | 'prev') => void
-  selectedDate: Date
+  selectedDate: string
 }
 
 export function SelectedMonth({
   handleChangeDate,
   selectedDate,
 }: SelectedMonthProps) {
+  const currentDate = dayjs(selectedDate).format(`MMMM , YYYY`)
   return (
     <div className="flex justify-between w-56 items-center mt-8">
       <div
@@ -24,7 +26,7 @@ export function SelectedMonth({
         />
       </div>
       <div className="text-colisao-500 font-bold font">
-        <h1> {format(selectedDate, 'MMMM, yyyy', { locale: ptBR })}</h1>
+        <h1> {currentDate}</h1>
       </div>
       <div
         onClick={() => {

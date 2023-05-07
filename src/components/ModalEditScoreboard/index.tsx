@@ -11,7 +11,8 @@ import {
 import { ScoreboardMatchProps } from '../../pages/Scoreboard'
 import { Modal } from '../Modal'
 import { doc, setDoc } from 'firebase/firestore'
-import db from '../../firebase'
+import { firestore } from '../../firebase/firebaseConfig'
+import { toast } from 'react-toastify'
 
 interface ScoreboardData {
 	id: string,
@@ -23,7 +24,6 @@ interface ScoreboardData {
 		primeiroColisao: number
 		primeiroAdversario: number
 	}
-
 	dataPartida: string
 }
 interface ModalEditScoreboardProps {
@@ -49,7 +49,7 @@ export function ModalEditScoreboard({
 				if (segundoColisao <= 0) {
 					return
 				}
-				setSegundoColisao((count) => count - 1)
+				setSegundoColisao(count => count - 1)
 				break
 			case 'segundoAdv':
 				if (segundoAdversario <= 0) {
@@ -69,34 +69,41 @@ export function ModalEditScoreboard({
 				}
 				setPrimeiroAdversario((count) => count - 1)
 				break
-
 			default:
 				break
 		}
 	}
 	async function handleUpdateScorebaord(e: FormEvent) {
 		// const updateScoreboard = data.findIndex(update => update.id === id)
-		e.preventDefault()
-		const score: any = {
-			dataPartida,
-			segundoQuadro: {
-				segundoColisao,
-				segundoAdversario,
-			},
-			primeiroQuadro: {
-				primeiroColisao,
-				primeiroAdversario,
-			},
+		try {
+			e.preventDefault()
+			const score: any = {
+				dataPartida,
+				segundoQuadro: {
+					segundoColisao,
+					segundoAdversario,
+				},
+				primeiroQuadro: {
+					primeiroColisao,
+					primeiroAdversario,
+				},
+			}
+			await setDoc(doc(firestore, "scoreboards", id), score)
+			/* setDataPartida('')
+			setSegundoColisao(0)		// data[updateScoreboard] = score
+			setSegundoAdversario(0)		// data[updateScoreboard] = score
+			setPrimeiroColisao(0)		// data[updateScoreboard] = score
+			setPrimeiroAdversario(0) */
+			toast.success('Placar alterado com sucesso ⚽');
+		} catch (error) {
+			toast.error('Não foi possivel alterar o resuldado,tente novamente. 😤');
 		}
-		setDoc(doc(db, "scoreboards", id), score)
-		setDataPartida('')
-		setSegundoColisao(0)		// data[updateScoreboard] = score
-		setSegundoAdversario(0)		// data[updateScoreboard] = score
-		setPrimeiroColisao(0)		// data[updateScoreboard] = score
-		setPrimeiroAdversario(0)		// data[updateScoreboard] = score
+		// data[updateScoreboard] = score
 	}
+
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+
 			<header>
 				<div className="flex justify-center items-center">
 					<div className="flex justify-center w-11/12">
@@ -116,21 +123,20 @@ export function ModalEditScoreboard({
 						</span>
 						<input
 							className="
-                placeholder:italic placeholder:text-yellow-500
-                focus:border-text-yellow-500 focus:ring-text-yellow-500 focus:ring-1
-                w-full
-                py-2 pl-9 pr-3
-                shadow-sm
-                focus:none
-                bg-black
-                border-2 border-yellow-500
-              
-              "
+							placeholder:italic placeholder:text-yellow-500
+							focus:border-text-yellow-500 focus:ring-text-yellow-500 focus:ring-1
+							w-full
+							py-2 pl-9 pr-3
+							shadow-sm
+							focus:none
+							bg-black
+							border-2 border-yellow-500						
+						"
 							placeholder="Escolha uma Data"
 							required
 							type="date"
 							name="date"
-							value={updateDate}
+							value={dataPartida}
 							onChange={(e) => setDataPartida(e.target.value)}
 						/>
 					</label>
@@ -148,10 +154,10 @@ export function ModalEditScoreboard({
 								<span className="font-bold text-md ">Colisao</span>
 								<div className="flex flex-row items-center gap-4 mt-2 text-xxl">
 									<Plus
-										onClick={() => setSegundoColisao(segundoColisao + 1)}
+										onClick={() => setSegundoColisao((count) => count + 1)}
 										className="cursor-pointer"
 									/>
-									<span>{segundoQuadro.segundoColisao}</span>
+									<span>{segundoColisao}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"
@@ -163,16 +169,15 @@ export function ModalEditScoreboard({
 								<span className="font-bold text-md ">Adversario</span>
 								<div className="flex flex-row items-center gap-4 mt-2 text-xxl">
 									<Plus
-										className='cursor-pointer'
+										className="cursor-pointer"
 										onClick={() => setSegundoAdversario((count) => count + 1)}
 									/>
-									<span>{segundoQuadro.segundoAdversario}</span>
+									<span>{segundoAdversario}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"
 										id="segundoAdv"
 									/>
-
 								</div>
 							</div>
 						</div>
@@ -186,10 +191,10 @@ export function ModalEditScoreboard({
 								<span className="font-bold text-md ">Colisao</span>
 								<div className="flex flex-row items-center gap-4 mt-2 text-xxl">
 									<Plus
-										className='cursor-pointer'
+										className="cursor-pointer"
 										onClick={() => setPrimeiroColisao((count) => count + 1)}
 									/>
-									<span>{primeiroQuadro.primeiroColisao}</span>
+									<span>{primeiroColisao}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"
@@ -201,9 +206,10 @@ export function ModalEditScoreboard({
 								<span className="font-bold text-md ">Adversario</span>
 								<div className="flex flex-row items-center gap-4 mt-2 text-xxl">
 									<Plus
+										className="cursor-pointer"
 										onClick={() => setPrimeiroAdversario((count) => count + 1)}
 									/>
-									<span>{primeiroQuadro.primeiroAdversario}</span>
+									<span>{primeiroAdversario}</span>
 									<MinusCircle
 										onClick={(e) => handleChekIsLessThanZero(e)}
 										className="cursor-pointer"

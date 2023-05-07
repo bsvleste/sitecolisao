@@ -39,6 +39,14 @@ module.exports = {
       }
     },
     extend: {
+      keyframes:{
+        pulse:{
+          '50%':{opacity:'.1'}
+        }
+      },
+     animation:{
+      'pulse-colisao':'pulse 2s infinite '
+     },
       fontFamily: {
         sans: "Roboto, sans-serif"
       },
