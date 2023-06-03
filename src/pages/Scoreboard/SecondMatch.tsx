@@ -7,9 +7,10 @@ type CardMatchProps = {
     segundoColisao: number
     segundoAdversario: number
   }
+  nomeTimeAdversario: string
 }
 
-export function SecondMatch({ segundo }: CardMatchProps) {
+export function SecondMatch({ segundo, nomeTimeAdversario }: CardMatchProps) {
   const { segundoColisao, segundoAdversario } = segundo
   return (
     <div className="flex justify-center items-center flex-col mt-4 mb-6 ">
@@ -27,11 +28,10 @@ export function SecondMatch({ segundo }: CardMatchProps) {
               {segundoColisao}
             </span>
           </div>
-          <img
-            src={logoAdversario}
-            alt="logo colisao"
-            className="w-24 h-24 absolute top-[8%] left-[65%]"
-          />
+          <p className="w-24 h-24 absolute top-[40%] left-[70%]">
+            {nomeTimeAdversario}
+          </p>
+
           <div className="absolute left-[56%] top-[35%] ">
             <span className="text-black font-semibold text-lg">
               {segundoAdversario}

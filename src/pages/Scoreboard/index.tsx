@@ -25,6 +25,8 @@ export interface ScoreboardMatchProps {
     primeiroAdversario: number
   }
   dataPartida: string
+  nomeTimeAdversario: string
+
 }
 
 export function Scoreboard() {

@@ -13,6 +13,8 @@ import { Modal } from '../Modal'
 import { doc, setDoc } from 'firebase/firestore'
 import { firestore } from '../../firebase/firebaseConfig'
 import { toast } from 'react-toastify'
+import { Text } from '../Text'
+import { TextInput } from '../TextInput'
 
 interface ScoreboardData {
 	id: string,
@@ -24,7 +26,8 @@ interface ScoreboardData {
 		primeiroColisao: number
 		primeiroAdversario: number
 	}
-	dataPartida: string
+	dataPartida: string,
+	nomeTimeAdversario: string
 }
 interface ModalEditScoreboardProps {
 	setIsOpen: () => void
@@ -36,13 +39,14 @@ export function ModalEditScoreboard({
 	setIsOpen,
 	editingScoreboard
 }: ModalEditScoreboardProps) {
-	const { id, dataPartida: updateDate, segundoQuadro, primeiroQuadro } = editingScoreboard
+	const { id, dataPartida: updateDate, segundoQuadro, primeiroQuadro, nomeTimeAdversario: adversario } = editingScoreboard
 	const [segundoColisao, setSegundoColisao] = useState(segundoQuadro.segundoColisao)
 	const [segundoAdversario, setSegundoAdversario] = useState(segundoQuadro.segundoAdversario)
 	const [primeiroColisao, setPrimeiroColisao] = useState(primeiroQuadro.primeiroColisao)
 	const [primeiroAdversario, setPrimeiroAdversario] = useState(primeiroQuadro.primeiroAdversario)
 	const [dataPartida, setDataPartida] = useState(updateDate)
-
+	const [nomeTimeAdversario, setNomeTimeAdversario] = useState(adversario)
+	const [isLoading, setIsLoading] = useState(false)
 	function handleChekIsLessThanZero(e: FormEvent) {
 		switch (e.currentTarget.id) {
 			case 'segundoColisao':
@@ -74,10 +78,12 @@ export function ModalEditScoreboard({
 		}
 	}
 	async function handleUpdateScorebaord(e: FormEvent) {
-		// const updateScoreboard = data.findIndex(update => update.id === id)
+
 		try {
+			setIsLoading(true)
 			e.preventDefault()
 			const score: any = {
+				nomeTimeAdversario,
 				dataPartida,
 				segundoQuadro: {
 					segundoColisao,
@@ -89,21 +95,18 @@ export function ModalEditScoreboard({
 				},
 			}
 			await setDoc(doc(firestore, "scoreboards", id), score)
-			/* setDataPartida('')
-			setSegundoColisao(0)		// data[updateScoreboard] = score
-			setSegundoAdversario(0)		// data[updateScoreboard] = score
-			setPrimeiroColisao(0)		// data[updateScoreboard] = score
-			setPrimeiroAdversario(0) */
+
 			toast.success('Placar alterado com sucesso ⚽');
 		} catch (error) {
 			toast.error('Não foi possivel alterar o resuldado,tente novamente. 😤');
+		} finally {
+			setIsLoading(false)
 		}
-		// data[updateScoreboard] = score
+
 	}
 
 	return (
 		<Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-
 			<header>
 				<div className="flex justify-center items-center">
 					<div className="flex justify-center w-11/12">
@@ -140,7 +143,17 @@ export function ModalEditScoreboard({
 							onChange={(e) => setDataPartida(e.target.value)}
 						/>
 					</label>
-					<p className="hidden">A data da partida é um campo obrigatorio</p>
+				</div>
+				<div className="mt-4 ">
+					<Text size="sm">Time Adversario</Text>
+					<TextInput.Root>
+						<TextInput.Input
+							type="text"
+							placeholder="Digite o nome do Time Adversario"
+							onChange={(e) => setNomeTimeAdversario(e.target.value)}
+							value={nomeTimeAdversario}
+						/>
+					</TextInput.Root>
 				</div>
 			</header>
 			<form onSubmit={handleUpdateScorebaord}>
@@ -220,7 +233,7 @@ export function ModalEditScoreboard({
 						</div>
 					</div>
 				</main>
-				<Button.Root size="lg" type="submit">
+				<Button.Root size="lg" type="submit" disabled={isLoading}>
 					Cadastar
 					<Button.Icon>
 						<PaperPlaneTilt />
