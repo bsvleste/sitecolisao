@@ -26,7 +26,7 @@ export function Modal({ setIsOpen, isOpen, children, className }: ModalProps) {
       style={{
         content: {
           background: '#000',
-          height: '550px',
+          height: '620px',
           top: '50%',
           left: '50%',
           right: 'auto',

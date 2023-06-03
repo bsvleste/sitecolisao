@@ -17,7 +17,8 @@ type CardMatchProps = {
 }
 export function CardMatch({ info, isFetching }: CardMatchProps) {
   const { user } = useContext(AuthContext)
-  const { id, dataPartida, primeiroQuadro, segundoQuadro } = info
+  const { id, dataPartida, primeiroQuadro, segundoQuadro, nomeTimeAdversario } =
+    info
   const teste = info
   const [isModalOpen, setIsModalOpen] = useState(false)
   function togleModal() {
@@ -45,8 +46,14 @@ export function CardMatch({ info, isFetching }: CardMatchProps) {
           year: '2-digit',
         }).format(new Date(dataPartida))}
       </h1>
-      <SecondMatch segundo={segundoQuadro} />
-      <FirstMatch primeiro={primeiroQuadro} />
+      <SecondMatch
+        segundo={segundoQuadro}
+        nomeTimeAdversario={nomeTimeAdversario}
+      />
+      <FirstMatch
+        primeiro={primeiroQuadro}
+        nomeTimeAdversario={nomeTimeAdversario}
+      />
       <div className="w-full sm:w-[35.5rem] flex justify-between sm:justify-around tems-center mb-10">
         {user?.isAdmin && (
           <>

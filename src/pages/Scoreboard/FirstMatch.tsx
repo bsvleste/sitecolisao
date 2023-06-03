@@ -6,9 +6,10 @@ type FirstMatchProps = {
     primeiroColisao: number
     primeiroAdversario: number
   }
+  nomeTimeAdversario: string
 }
 
-export function FirstMatch({ primeiro }: FirstMatchProps) {
+export function FirstMatch({ primeiro, nomeTimeAdversario }: FirstMatchProps) {
   const { primeiroAdversario, primeiroColisao } = primeiro
   return (
     <div className="flex justify-center items-center flex-col mb-6 ">
@@ -26,11 +27,9 @@ export function FirstMatch({ primeiro }: FirstMatchProps) {
               {primeiroColisao}
             </span>
           </div>
-          <img
-            src={logoAdversario}
-            alt="logo colisao"
-            className="w-24 h-24 absolute top-[5%] left-[65%]"
-          />
+          <p className="w-24 h-24 absolute top-[40%] left-[70%]">
+            {nomeTimeAdversario}
+          </p>
           <div className="absolute left-[56%] top-[36%] ">
             <span className="text-black font-semibold text-lg">
               {primeiroAdversario}
